@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(90deg, #f453d8,#b234d6,#5227d4);
+    overflow-x: hidden;
+}
+
+#app {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 23px;
+  padding: 0rem;
+  font-weight: normal;
+  text-align: center;
+}
+
+@media (max-width: 7680px) {
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+  }
+}
