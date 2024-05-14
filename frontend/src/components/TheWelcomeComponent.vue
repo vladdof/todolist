@@ -1,9 +1,6 @@
 <template>
-  <div class="container">
+  <div>
     <HeaderComponent />
-    <h2>
-      Жми сюда если хочешь посмотреть
-    </h2>
 
     <router-link to="/todo-app">
       <button class="btn-new">
@@ -18,16 +15,8 @@ import HeaderComponent from './HeaderComponent.vue'
 </script>
 
 <style>
-h2 {
-  text-align: center;
-  margin-bottom: 24px;
-  font-weight: lighter;
-  font-family: system-ui;
-  color: white;
-}
-
 .btn-new {
-  width: 24%;
+  width: 70%;
   padding: 12px;
   border-radius: 14px;
   color: white;

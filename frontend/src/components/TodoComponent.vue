@@ -32,7 +32,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="wrapper">
     <form @submit.prevent="addTodo">
       <input autofocus placeholder="Напиши свою заметку" class="todo" v-model="newTodo">
       <button class="btn-new">Добавить заметку</button>
@@ -53,15 +53,13 @@ onMounted(async () => {
 
 
 <style scoped>
-  .container {
-    width: 49%;
-    display: inline-block;
-    text-align: center;
+  .wrapper {
+    width: clamp(4rem, 100vw, 42rem);
   }
 
   form {
-    padding: 34px 12px;
     margin-bottom: 23px;
+    padding: 34px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,16 +68,17 @@ onMounted(async () => {
   }
 
   .todo {
-    height: 59px;
     width: 89%;
+    height: 59px;
     margin-bottom: 5%;
     padding: 10px;
     color: #fff;
     background-color: transparent;
     outline: 2px solid #fff;
     border: none;
-    border-radius: 23px;
+    border-radius: 12px;
     transition: outline 0.15s ease-in-out;
+    box-sizing: border-box;
   }
 
   .todo::placeholder {
@@ -92,16 +91,13 @@ onMounted(async () => {
 
   .btn-new {
     width: fit-content;
-    padding-inline-start: 16px;
-    padding-inline-end: 16px;
   }
 
   button {
-    padding: 10px;
-    background-color: transparent;
-    color: white;
-    border: none;
     padding: 12px;
+    color: #fff;
+    background-color: transparent;
+    border: none;
     border-radius: 12px;
     cursor: pointer;
   }
@@ -111,30 +107,28 @@ onMounted(async () => {
   }
 
   .btn-remove {
-    border-radius: 23px;
-    height: 39px;
     width: 39px;
+    height: 39px;
+    color: #fff;
     background-color: transparent;
-    color: white;
+    border-radius: 23px;
     cursor: pointer;
   }
 
   .todo-list {
-    list-style-type: none;
     padding: 0;
+    list-style-type: none;
   }
 
   .todo-item {
+    margin-bottom: 10px;
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
+    background-color: transparent;
     border: 1px solid #ffffff4a;
     border-radius: 23px;
-    background-color: #fff;
-    color: rgb(255, 255, 255);
-    background-color: transparent;
 
     position: relative;
     top: 0;
@@ -150,8 +144,9 @@ onMounted(async () => {
 
 
   @media (max-width: 600px) {
+    .todo,
     .btn-new {
-      width: 70%;
+      width: 100%;
     }
   }
 </style>
