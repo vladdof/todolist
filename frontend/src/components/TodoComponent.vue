@@ -1,9 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { API_URL } from '../config'
-import { fetchTasks } from '../api/fetch-tasks'
-import { deleteTask } from '../api/delete-task'
-import { createTask } from '../api/create-task'
+import { fetchTasks, deleteTask, createTask } from '@/api'
 
 let id = 0
 const newTodo = ref('')
