@@ -4,14 +4,13 @@ import cors from 'cors'
 import { setupDB } from './config/setupDB.js'
 import tasksRouter from './routes/tasks.js'
 const port = process.env.PORT || 8080;
+const whitelist = process.env.CORS_WHITELIST ? process.env.CORS_WHITELIST.split(',') : [];
 
 // CREATE APIs URL ENDPOINTS TO CREATE AND DELETE TO DO ITEMS
 async function startServer() {
     try {
         await setupDB()
         const app = express()
-
-        const whitelist = ['http://localhost:5173']; // assuming front-end application is running on localhost port 3000
 
         const corsOptions = {
             origin: (origin, callback) => {
