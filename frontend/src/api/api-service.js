@@ -8,6 +8,11 @@ class ApiService {
     async request(url, options = {}) {
         try {
             const response = await fetch(`${this.baseUrl}${url}`, options);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
             return response.json();
         } catch (error) {
             console.error(`Ошибка при запросе ${url}: `, error);

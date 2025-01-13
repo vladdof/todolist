@@ -14,10 +14,10 @@ async function addTodo() {
 
 async function removeTodo(todo) {
   const response = await apiService.deleteTask(todo.id);
-  if (response.ok) {
+  if (response.success) {
     todos.value = todos.value.filter((t) => t.id !== id);
   } else {
-    console.error("Ошибка при удалении задачи:", response.statusText);
+    console.error("Ошибка при удалении задачи: ", response.statusText);
   }
 
   todos.value = todos.value.filter((t) => t.id !== todo.id);
