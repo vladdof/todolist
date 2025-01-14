@@ -36,4 +36,16 @@ router.delete('/api/tasks/:id', async (req, res) => {
     }
 });
 
+router.put('/api/tasks/:id', async (req, res) => {
+    const { id } = req.params;
+    const { text } = req.body;
+    const task = await Task.findByPk(id);
+    if (!task) {
+        return res.status(404).json({ message: 'Task not found' });
+    }
+    task.text = text;
+    await task.save();
+    res.status(200).json(task);
+});
+
 export default router;
