@@ -5,8 +5,11 @@ import { apiService } from '@/api'
 let id = 0
 const newTodo = ref('')
 const todos = ref([])
+const isLoadingTask = ref(true)
 
 async function addTodo() {
+  if (newTodo.value.trim() === '') return
+
   const newTask = await apiService.createTask(newTodo.value)
   todos.value.push(newTask)
   newTodo.value = ''
@@ -24,7 +27,13 @@ async function removeTodo(todo) {
 }
 
 onMounted(async () => {
-  todos.value = await apiService.fetchTasks();
+  try {
+    todos.value = await apiService.fetchTasks();
+  } catch (error) {
+    console.log('Ошибка при получении задач: ', error);
+  } finally {
+    isLoadingTask.value = false
+  }
 });
 </script>
 
@@ -35,7 +44,11 @@ onMounted(async () => {
       <button class="btn-new">Добавить заметку</button>
     </form>
 
-    <ul class="todo-list">
+    <div v-if="isLoadingTask" class="loader-container">
+      <div class="loader"></div>
+    </div>
+
+    <ul v-else class="todo-list">
       <li v-for="item in todos" :key="item.id" class="todo-item">
         {{ item.text }}
         <button class="btn-remove" @click="removeTodo(item)">X</button>
@@ -141,10 +154,30 @@ button:hover {
 
 
 @media (max-width: 600px) {
-
   .todo,
   .btn-new {
     width: 100%;
   }
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
