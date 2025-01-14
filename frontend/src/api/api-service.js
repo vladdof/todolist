@@ -39,6 +39,16 @@ class ApiService {
             method: 'DELETE',
         });
     }
+
+    async updateTask(id, text) {
+        return this.request(`/api/tasks/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text }),
+        });
+    }
 }
 
 export const apiService = new ApiService(API_URL);
