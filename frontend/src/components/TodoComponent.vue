@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { apiService } from '@/api'
 import { formatDate } from '@/lib/format-date'
 import { formatNumber } from '@/lib/format-number'
@@ -12,10 +12,6 @@ const isLoadingTask = ref(true)
 
 taskChannel.on((data) => {
   todos.value.push(data)
-})
-
-onBeforeUnmount(() => {
-  taskChannel.close()
 })
 
 async function addTodo() {
@@ -118,10 +114,6 @@ const cancelEditing = () => {
         </template>
       </li>
     </ul>
-
-    <router-link to="/">
-      <button style="width: 157px;">Вернуться</button>
-    </router-link>
   </div>
 </template>
 
