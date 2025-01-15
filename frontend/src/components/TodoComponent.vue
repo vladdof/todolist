@@ -1,19 +1,30 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { apiService } from '@/api'
 import { formatDate } from '@/lib/format-date'
 import { formatNumber } from '@/lib/format-number'
+import { taskChannel } from '@/lib/task-channel'
 
 let id = 0
 const newTodo = ref('')
 const todos = ref([])
 const isLoadingTask = ref(true)
 
+taskChannel.on((data) => {
+  todos.value.push(data)
+})
+
+onBeforeUnmount(() => {
+  taskChannel.close()
+})
+
 async function addTodo() {
   if (newTodo.value.trim() === '') return
 
   const newTask = await apiService.createTask(newTodo.value)
   todos.value.push(newTask)
+
+  taskChannel.postMessage(newTask)
   newTodo.value = ''
 }
 
@@ -56,9 +67,13 @@ const cancelEditing = () => {
 
 <template>
   <div class="wrapper">
-    <form @submit.prevent="addTodo">
-      <input autofocus placeholder="Напиши свою заметку" class="todo" v-model="newTodo">
-      <button class="btn-new">Добавить заметку</button>
+    <form class="form" @submit.prevent="addTodo">
+      <textarea autofocus rows="7" placeholder="Напиши свою заметку" class="todo" v-model="newTodo" />
+
+      <div class="form-bottom">
+        <button class="btn-new">Добавить заметку</button>
+        <p>Всего задач: {{ formatNumber(todos.length) }}</p>
+      </div>
     </form>
 
     <div v-if="isLoadingTask" class="loader-container">
@@ -104,8 +119,6 @@ const cancelEditing = () => {
       </li>
     </ul>
 
-    <p>Всего задач: {{ formatNumber(todos.length) }}</p>
-
     <router-link to="/">
       <button style="width: 157px;">Вернуться</button>
     </router-link>
@@ -118,7 +131,7 @@ const cancelEditing = () => {
   width: clamp(4rem, 100vw, 42rem);
 }
 
-form {
+.form {
   margin-bottom: 23px;
   padding: 34px 12px;
   display: flex;
@@ -126,6 +139,13 @@ form {
   align-items: center;
   border: 1px solid #fff;
   border-radius: 12px;
+}
+
+.form-bottom {
+  width: 89%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .todo {
@@ -155,6 +175,8 @@ form {
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
+  text-align: start;
+  overflow-wrap: anywhere;
 }
 
 .btn-new {
@@ -187,8 +209,10 @@ button:hover {
 }
 
 .todo-list {
+  height: 100%;
   padding: 0;
   list-style-type: none;
+  overflow: auto;
 }
 
 .todo-item {
@@ -215,8 +239,14 @@ button:hover {
 
 @media (max-width: 600px) {
   .todo,
-  .btn-new {
+  .btn-new,
+  .form-bottom {
     width: 100%;
+  }
+
+  .form-bottom {
+    flex-direction: column;
+    gap: 10px;
   }
 }
 
