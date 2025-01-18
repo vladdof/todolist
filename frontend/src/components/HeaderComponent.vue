@@ -1,7 +1,7 @@
 <template>
-  <h1>Привет - это toDo проект</h1>
+  <h1 class="rubik-mono-one-regular">Привет - это toDo проект</h1>
 
-  <h2>
+  <h2 class="ubuntu-regular">
     Жми сюда если хочешь посмотреть
   </h2>
 </template>
@@ -13,7 +13,5 @@
 
   h2 {
     margin: 0 0 24px;
-    font-weight: lighter;
-    font-family: system-ui;
   }
 </style>
