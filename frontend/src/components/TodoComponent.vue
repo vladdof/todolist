@@ -62,7 +62,7 @@ const cancelEditing = () => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="">
     <form class="form" @submit.prevent="addTodo">
       <textarea autofocus rows="7" placeholder="Напиши свою заметку" class="todo" v-model="newTodo" />
 
@@ -119,11 +119,9 @@ const cancelEditing = () => {
 
 
 <style scoped>
-.wrapper {
-  width: clamp(4rem, 100vw, 42rem);
-}
-
 .form {
+  position: sticky;
+  top: 12px;
   margin-bottom: 23px;
   padding: 34px 12px;
   display: flex;
@@ -201,7 +199,6 @@ button:hover {
 }
 
 .todo-list {
-  height: 100%;
   padding: 0;
   list-style-type: none;
   overflow: auto;
