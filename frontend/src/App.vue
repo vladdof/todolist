@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-  import {  onBeforeUnmount } from 'vue'
+  import { onBeforeUnmount } from 'vue'
   import { taskChannel } from '@/lib/task-channel'
 
   onBeforeUnmount(() => {
