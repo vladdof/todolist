@@ -138,37 +138,6 @@ const cancelEditing = () => {
   align-items: center;
 }
 
-.todo {
-  width: 89%;
-  height: 59px;
-  margin-bottom: 5%;
-  padding: 10px;
-  color: #fff;
-  background-color: transparent;
-  outline: 2px solid #fff;
-  border: none;
-  border-radius: 12px;
-  transition: outline 0.15s ease-in-out;
-  box-sizing: border-box;
-}
-
-.todo::placeholder {
-  color: #fff;
-}
-
-.todo:focus-visible {
-  outline: 2px solid #9999FF;
-}
-
-.todo-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
-  text-align: start;
-  overflow-wrap: anywhere;
-}
-
 .btn-new {
   width: fit-content;
 }
@@ -226,6 +195,37 @@ button:hover {
   left: -4px;
 }
 
+.todo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.todo {
+  width: 89%;
+  height: 59px;
+  margin-bottom: 5%;
+  padding: 10px;
+  color: #fff;
+  background-color: transparent;
+  outline: 2px solid #fff;
+  border: none;
+  border-radius: 12px;
+  transition: outline 0.15s ease-in-out;
+  box-sizing: border-box;
+}
+
+.todo::placeholder {
+  color: #fff;
+}
+
+.todo:focus-visible {
+  outline: 2px solid #9999FF;
+}
+
 @media (max-width: 600px) {
   .todo,
   .btn-new,
@@ -237,27 +237,6 @@ button:hover {
     flex-direction: column;
     gap: 10px;
   }
-}
-
-.loader-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100px;
-}
-
-.loader {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .edit-input {
