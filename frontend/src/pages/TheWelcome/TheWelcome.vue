@@ -5,7 +5,7 @@
     <TButton
       class="welcome-btn"
       type="link"
-      link="/todo-app"
+      link="/todos"
     >
       Посмотреть
     </TButton>
