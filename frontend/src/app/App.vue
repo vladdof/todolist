@@ -6,7 +6,7 @@
 
 <script setup>
   import { onBeforeUnmount } from 'vue'
-  import { taskChannel } from '@/lib/task-channel'
+  import { taskChannel } from '@/shared/lib/task-channel'
 
   onBeforeUnmount(() => {
     taskChannel.close()
