@@ -1,10 +1,11 @@
 <template>
-  <tagName
+  <component
+    :is="tagName"
     class="t-button"
     v-bind="tagProps"
   >
     <slot />
-  </tagName>
+  </component>
 </template>
 
 <script setup>
@@ -21,8 +22,8 @@ const props = defineProps({
   }
 })
 
-const tagName = computed(() => props.type === 'link' ? 'a' : 'button')
-const tagProps = computed(() => props.type === 'link' ? { href: props.link, class: 't-button--link' } : {})
+const tagName = computed(() => props.type === 'link' ? 'router-link' : 'button')
+const tagProps = computed(() => props.type === 'link' ? { to: props.link, class: 't-button--link' } : {})
 </script>
 
 <style>
@@ -44,9 +45,9 @@ const tagProps = computed(() => props.type === 'link' ? { href: props.link, clas
     top: -4px;
     left: -4px;
   }
+}
 
-  &--link {
-    text-decoration: none;
-  }
+.t-button--link {
+  text-decoration: none;
 }
 </style>
