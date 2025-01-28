@@ -1,0 +1,16 @@
+---
+const title = 'Todos';
+
+import Layout from '@layouts/Layout.astro';
+import TodoItem from '@components/TodoItem.astro';
+import { type Todo } from '@utils/types';
+
+import { fetchTodos } from '@utils/fetchTodos'
+const todos: Todo[] = await fetchTodos();
+---
+
+<Layout title={title}>
+	<ul class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 grid-rows-3">
+		{todos.map((item: Todo) => <TodoItem todo={item} />)}
+	</ul>
+</Layout>
