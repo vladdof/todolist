@@ -14,6 +14,34 @@ On startup, the app now:
 - does **not** drop existing tables
 - seeds demo tasks only when the tasks table is empty
 
+## Per-user todos without registration
+
+Todos are now isolated by an anonymous client id:
+
+1. Frontend generates a random client id once and stores it in `localStorage`.
+2. Every API request sends this value in the `x-client-id` header.
+3. Backend filters create/read/update/delete queries by `x-client-id`.
+
+### Why this approach
+
+- Better isolation than IP-only (many users can share one IP).
+- Simpler and more stable than browser fingerprinting.
+- No registration/login required.
+
+### Other options
+
+- **IP only**: easy, but unreliable and often shared.
+- **Fingerprint + IP**: can improve uniqueness, but is unstable and privacy-sensitive.
+- **Signed anonymous cookie/session id**: good alternative when localStorage is not desired.
+
+## Render deployment note
+
+Auto-deploy from Render dashboard is totally fine.  
+Make sure these env vars are set there:
+
+- `SQLITE_STORAGE_PATH` to a persistent disk path (example: `/data/database.sqlite`)
+- `CORS_WHITELIST` including your frontend URL
+
 ## Suggested project improvements
 
 1. Add automated tests for backend routes (create/list/delete tasks).

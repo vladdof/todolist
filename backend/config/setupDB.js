@@ -9,9 +9,9 @@ export const setupDB = async () => {
 
         if (tasksCount === 0) {
             await Task.bulkCreate([
-                { text: "Task-1" },
-                { text: "Task-2" },
-                { text: "Task-3" },
+                { text: "Task-1", clientId: "demo-user" },
+                { text: "Task-2", clientId: "demo-user" },
+                { text: "Task-3", clientId: "demo-user" },
             ]);
         }
     } catch (error) {

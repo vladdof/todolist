@@ -1,5 +1,27 @@
 import { API_URL } from '../config';
 
+const clientIdStorageKey = 'todo-client-id';
+
+const createClientId = () => {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+
+    return `anon-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+};
+
+const getOrCreateClientId = () => {
+    const storedClientId = localStorage.getItem(clientIdStorageKey);
+
+    if (storedClientId) {
+        return storedClientId;
+    }
+
+    const clientId = createClientId();
+    localStorage.setItem(clientIdStorageKey, clientId);
+    return clientId;
+};
+
 class ApiService {
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
@@ -7,7 +29,13 @@ class ApiService {
 
     async request(url, options = {}) {
         try {
-            const response = await fetch(`${this.baseUrl}${url}`, options);
+            const response = await fetch(`${this.baseUrl}${url}`, {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    'x-client-id': getOrCreateClientId(),
+                },
+            });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
