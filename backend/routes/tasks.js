@@ -4,6 +4,7 @@ import { Task } from '../models/index.js';
 const router = Router();
 const clientIdHeader = 'x-client-id';
 const maxClientIdLength = 128;
+const clientIdPattern = /^[a-zA-Z0-9-]+$/;
 
 const timeLog = (req, res, next) => {
     console.log('Time: ', Date.now())
@@ -11,10 +12,14 @@ const timeLog = (req, res, next) => {
 }
 router.use(timeLog)
 
-router.use('/api/tasks', (req, res, next) => {
-    const clientId = req.get(clientIdHeader)?.trim();
+router.use((req, res, next) => {
+    const clientId = req.get(clientIdHeader);
 
-    if (!clientId || clientId.length > maxClientIdLength) {
+    if (
+        !clientId
+        || clientId.length > maxClientIdLength
+        || !clientIdPattern.test(clientId)
+    ) {
         return res.status(400).json({ message: 'Missing or invalid x-client-id header' });
     }
 

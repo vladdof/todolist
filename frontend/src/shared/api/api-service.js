@@ -7,7 +7,15 @@ const createClientId = () => {
         return crypto.randomUUID();
     }
 
-    return `anon-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+        const randomBytes = new Uint8Array(16);
+        crypto.getRandomValues(randomBytes);
+        const randomHex = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
+        return `anon-${randomHex}`;
+    }
+
+    const entropy = `${Date.now()}-${Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)}-${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+    return `anon-${encodeURIComponent(entropy).replace(/[^a-zA-Z0-9-]/g, '').slice(0, 64)}`;
 };
 
 const getOrCreateClientId = () => {

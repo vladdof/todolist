@@ -13,6 +13,7 @@ On startup, the app now:
 - creates tables if they do not exist
 - does **not** drop existing tables
 - seeds demo tasks only when the tasks table is empty
+- does not run full schema migrations automatically (handle schema changes separately)
 
 ## Per-user todos without registration
 
