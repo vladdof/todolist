@@ -2,6 +2,9 @@ import { Router } from 'express';
 import { Task } from '../models/index.js';
 
 const router = Router();
+const clientIdHeader = 'x-client-id';
+const maxClientIdLength = 128;
+const clientIdPattern = /^[a-zA-Z0-9-]+$/;
 
 const timeLog = (req, res, next) => {
     console.log('Time: ', Date.now())
@@ -9,21 +12,36 @@ const timeLog = (req, res, next) => {
 }
 router.use(timeLog)
 
+router.use((req, res, next) => {
+    const clientId = req.get(clientIdHeader);
+
+    if (
+        !clientId
+        || clientId.length > maxClientIdLength
+        || !clientIdPattern.test(clientId)
+    ) {
+        return res.status(400).json({ message: 'Missing or invalid x-client-id header' });
+    }
+
+    req.clientId = clientId;
+    next();
+});
+
 router.get('/api/tasks', async (req, res) => {
-    const tasks = await Task.findAll();
+    const tasks = await Task.findAll({ where: { clientId: req.clientId } });
     res.status(200).json(tasks);
 });
 
 router.post('/api/tasks', async (req, res) => {
     const { text } = req.body;
-    const task = await Task.create({ text });
+    const task = await Task.create({ text, clientId: req.clientId });
     res.status(201).json(task);
 });
 
 router.delete('/api/tasks/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const deletedCount = await Task.destroy({ where: { id } });
+        const deletedCount = await Task.destroy({ where: { id, clientId: req.clientId } });
 
         if (deletedCount === 0) {
             return res.status(404).json({ message: 'Task not found' });
@@ -39,7 +57,7 @@ router.delete('/api/tasks/:id', async (req, res) => {
 router.put('/api/tasks/:id', async (req, res) => {
     const { id } = req.params;
     const { text } = req.body;
-    const task = await Task.findByPk(id);
+    const task = await Task.findOne({ where: { id, clientId: req.clientId } });
     if (!task) {
         return res.status(404).json({ message: 'Task not found' });
     }

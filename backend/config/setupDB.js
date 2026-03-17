@@ -3,10 +3,17 @@ import { Task } from '../models/index.js';
 
 export const setupDB = async () => {
     try {
-        await sequelize.sync({ force: true });
-        await Task.create({ text: "Task-1" });
-        await Task.create({ text: "Task-2" });
-        await Task.create({ text: "Task-3" });
+        await sequelize.sync();
+
+        const tasksCount = await Task.count();
+
+        if (tasksCount === 0) {
+            await Task.bulkCreate([
+                { text: "Task-1", clientId: "demo-user" },
+                { text: "Task-2", clientId: "demo-user" },
+                { text: "Task-3", clientId: "demo-user" },
+            ]);
+        }
     } catch (error) {
         console.error(error);
     }
