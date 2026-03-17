@@ -28,14 +28,24 @@ router.use((req, res, next) => {
 });
 
 router.get('/api/tasks', async (req, res) => {
-    const tasks = await Task.findAll({ where: { clientId: req.clientId } });
-    res.status(200).json(tasks);
+    try {
+        const tasks = await Task.findAll({ where: { clientId: req.clientId } });
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
 });
 
 router.post('/api/tasks', async (req, res) => {
-    const { text } = req.body;
-    const task = await Task.create({ text, clientId: req.clientId });
-    res.status(201).json(task);
+    try {
+        const { text } = req.body;
+        const task = await Task.create({ text, clientId: req.clientId });
+        res.status(201).json(task);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
 });
 
 router.delete('/api/tasks/:id', async (req, res) => {
@@ -55,15 +65,20 @@ router.delete('/api/tasks/:id', async (req, res) => {
 });
 
 router.put('/api/tasks/:id', async (req, res) => {
-    const { id } = req.params;
-    const { text } = req.body;
-    const task = await Task.findOne({ where: { id, clientId: req.clientId } });
-    if (!task) {
-        return res.status(404).json({ message: 'Task not found' });
+    try {
+        const { id } = req.params;
+        const { text } = req.body;
+        const task = await Task.findOne({ where: { id, clientId: req.clientId } });
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        task.text = text;
+        await task.save();
+        res.status(200).json(task);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
     }
-    task.text = text;
-    await task.save();
-    res.status(200).json(task);
 });
 
 export default router;

@@ -3,7 +3,7 @@ import { Task } from '../models/index.js';
 
 export const setupDB = async () => {
     try {
-        await sequelize.sync();
+        await sequelize.sync({ alter: true });
 
         const tasksCount = await Task.count();
 
