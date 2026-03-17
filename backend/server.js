@@ -4,7 +4,9 @@ import cors from 'cors'
 import { setupDB } from './config/setupDB.js'
 import tasksRouter from './routes/tasks.js'
 const port = process.env.PORT || 8080;
-const whitelist = process.env.CORS_WHITELIST ? process.env.CORS_WHITELIST.split(',') : [];
+const whitelist = process.env.CORS_WHITELIST
+    ? process.env.CORS_WHITELIST.split(',').map((origin) => origin.trim()).filter(Boolean)
+    : [];
 
 // CREATE APIs URL ENDPOINTS TO CREATE AND DELETE TO DO ITEMS
 async function startServer() {
@@ -14,7 +16,8 @@ async function startServer() {
 
         const corsOptions = {
             origin: (origin, callback) => {
-                if (whitelist.indexOf(origin) !== -1) {
+                const isAllowedOrigin = !origin || whitelist.length === 0 || whitelist.includes(origin);
+                if (isAllowedOrigin) {
                     callback(null, true)
                 } else {
                     callback(new Error('Not allowed by CORS'))

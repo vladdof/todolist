@@ -41,7 +41,7 @@ Auto-deploy from Render dashboard is totally fine.
 Make sure these env vars are set there:
 
 - `SQLITE_STORAGE_PATH` to a persistent disk path (example: `/data/database.sqlite`)
-- `CORS_WHITELIST` including your frontend URL
+- `CORS_WHITELIST` including your frontend URL (if unset, all origins are allowed)
 
 ## Suggested project improvements
 
